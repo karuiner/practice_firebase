@@ -1,15 +1,68 @@
 import styled from "styled-components";
-
+import finit from "../FirebaseInit";
+import { getAuth } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+const auth = getAuth(finit);
 const Frame = styled.div`
   height: 100px;
   width: 100%;
   display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
-function Header() {
+const Button = styled.button`
+  height: 60px;
+  width: 200px;
+  padding: 10px;
+`;
+
+const email = "test@email.com";
+const password = "test_password";
+function Header({ setUserData }) {
+  function handleGoogleLogin() {
+    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+    signInWithPopup(auth, provider) // popup을 이용한 signup
+      .then((data) => {
+        setUserData(data.user); // user data 설정
+        console.log(data); // console로 들어온 데이터 표시
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  function handleEmailLogin() {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUserData(userCredential.user); // user data 설정
+        console.log(userCredential); // console로 들어온 데이터 표시
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  function handleEmailregist() {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setUserData(userCredential.user); // user data 설정
+        console.log(userCredential); // console로 들어온 데이터 표시
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <Frame>
-      <button>로그인</button>
+      <Button onClick={handleEmailregist}>회원 가입</Button>
+      <Button onClick={handleEmailLogin}>로그인</Button>
+      <Button onClick={handleGoogleLogin}>구글 계정으로 로그인</Button>
     </Frame>
   );
 }
