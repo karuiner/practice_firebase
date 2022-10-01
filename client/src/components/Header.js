@@ -19,13 +19,14 @@ const Frame = styled.div`
 
 const Button = styled.button`
   height: 60px;
-  width: 200px;
+  width: 150px;
   padding: 10px;
+  margin-left: 20px;
 `;
 
 const email = "test@email.com";
 const password = "test_password";
-function Header({ setUserData }) {
+function Header({ setUserData, setState }) {
   function handleGoogleLogin() {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     signInWithPopup(auth, provider) // popup을 이용한 signup
@@ -60,9 +61,15 @@ function Header({ setUserData }) {
 
   return (
     <Frame>
-      <Button onClick={handleEmailregist}>회원 가입</Button>
+      <Button
+        onClick={() => {
+          setState("Resister");
+        }}
+      >
+        회원 가입
+      </Button>
       <Button onClick={handleEmailLogin}>로그인</Button>
-      <Button onClick={handleGoogleLogin}>구글 계정으로 로그인</Button>
+      <Button onClick={handleGoogleLogin}>구글 계정 로그인</Button>
     </Frame>
   );
 }
