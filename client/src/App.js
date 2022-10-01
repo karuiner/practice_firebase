@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { useState } from "react";
 import Display from "./components/Display";
 import Resister from "./components/Resister";
+import Login from "./components/Login";
 
 const Frame = styled.div`
   height: 100vh;
@@ -30,6 +31,9 @@ function App() {
 
         {state === "Resister" ? (
           <Resister setUserData={setUserData} setState={setState}></Resister>
+        ) : null}
+        {state === "Login" ? (
+          <Login setUserData={setUserData} setState={setState}></Login>
         ) : null}
         {state === "Result" ? <Display userData={userData}></Display> : null}
       </Main>

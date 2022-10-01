@@ -1,8 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  updateProfile,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import styled from "styled-components";
 import finit from "../FirebaseInit";
@@ -48,19 +44,11 @@ const ButtonLine = styled.div`
   align-items: center;
 `;
 const auth = getAuth(finit);
-function Resister({ setUserData, setState }) {
+function Login({ setUserData, setState }) {
   const [data, setData] = useState({ username: "", email: "", password: "" });
   return (
     <Frame>
       <InnerFrame>
-        <Label>username</Label>
-        <Input
-          value={data.username}
-          type="text"
-          onChange={(e) => {
-            setData({ ...data, username: e.target.value });
-          }}
-        ></Input>
         <Label>E-mail</Label>
         <Input
           value={data.email}
@@ -78,19 +66,12 @@ function Resister({ setUserData, setState }) {
         <ButtonLine>
           <button
             onClick={() => {
-              if (
-                data.username.length > 4 &&
-                data.email.length > 4 &&
-                data.password.length > 6
-              ) {
-                createUserWithEmailAndPassword(auth, data.email, data.password)
+              if (data.email.length > 4 && data.password.length > 4) {
+                signInWithEmailAndPassword(auth, data.email, data.password)
                   .then((userCredential) => {
-                    updateProfile(userCredential.user, {
-                      displayName: data.username,
-                    }).then((e) => {
-                      setUserData(userCredential.user); // user data 설정
-                      setState("Result");
-                    });
+                    setUserData(userCredential.user); // user data 설정
+                    setState("Result");
+                    console.log(userCredential); // console로 들어온 데이터 표시
                   })
                   .catch((err) => {
                     console.log(err);
@@ -98,7 +79,7 @@ function Resister({ setUserData, setState }) {
               }
             }}
           >
-            회원 가입
+            Login
           </button>
         </ButtonLine>
       </InnerFrame>
@@ -106,4 +87,4 @@ function Resister({ setUserData, setState }) {
   );
 }
 
-export default Resister;
+export default Login;

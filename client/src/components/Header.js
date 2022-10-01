@@ -1,12 +1,7 @@
 import styled from "styled-components";
 import finit from "../FirebaseInit";
 import { getAuth } from "firebase/auth";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const auth = getAuth(finit);
 const Frame = styled.div`
   height: 100px;
@@ -38,26 +33,6 @@ function Header({ setUserData, setState }) {
         console.log(err);
       });
   }
-  function handleEmailLogin() {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserData(userCredential.user); // user data 설정
-        console.log(userCredential); // console로 들어온 데이터 표시
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-  function handleEmailregist() {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserData(userCredential.user); // user data 설정
-        console.log(userCredential); // console로 들어온 데이터 표시
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   return (
     <Frame>
@@ -68,7 +43,13 @@ function Header({ setUserData, setState }) {
       >
         회원 가입
       </Button>
-      <Button onClick={handleEmailLogin}>로그인</Button>
+      <Button
+        onClick={() => {
+          setState("Login");
+        }}
+      >
+        일반 로그인
+      </Button>
       <Button onClick={handleGoogleLogin}>구글 계정 로그인</Button>
     </Frame>
   );
